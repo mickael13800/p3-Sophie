@@ -14,6 +14,10 @@ h2, .oubliMdp {
     text-align: center;
 }
 
+.login {
+    font-weight: bold;
+}
+
 #email, #password {
    width: 379px;
    height: 51px;
