@@ -7,3 +7,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
     étape 4 qd je clique sur le bouton envoyer, je fais un console.log de ce qui a été saisie dans le champ e-mail
     */
   });
+let form = document.querySelector("form")
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault()
+  let email = document.getElementById("email")
+  console.log (email.value)
+})
