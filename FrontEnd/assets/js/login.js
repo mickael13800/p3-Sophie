@@ -14,3 +14,10 @@ form.addEventListener("submit", (event) => {
   let email = document.getElementById("email")
   console.log (email.value)
 })
+
+fetch ("http://localhost:5678/api/categories").then(response => {
+  console.log(response)
+});
+fetch ("http://localhost:5678/api/works").then(response => {
+  console.log(response)
+});
