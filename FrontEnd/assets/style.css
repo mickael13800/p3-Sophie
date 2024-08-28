@@ -216,6 +216,10 @@ li:hover {
   margin-bottom: 50px;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .filtres button {
   border-radius: 60px;
   height: 37px;
@@ -226,7 +230,20 @@ li:hover {
   font-weight: bold;
 }
 
-button .active {
+.filtres button:first-child,
+button:nth-child(2) {
+  width: 100px;
+}
+
+.filtres button:nth-child(3) {
+  width: 157px;
+}
+
+.filtres button:last-child {
+  width: 198px;
+}
+
+.filtres .active {
   background-color: #1d6154;
   color: white;
 }

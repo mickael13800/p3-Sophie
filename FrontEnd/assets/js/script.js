@@ -24,14 +24,25 @@ document.addEventListener("DOMContentLoaded", async (event) => {
   //Création des boutons filtres + intégration dans le fichier HTML
   let boutonTous = document.createElement("button");
   boutonTous.innerText = "Tous";
-  boutonTous.classList.add("filtre");
   divFiltre.appendChild(boutonTous);
 
   for (let i = 0; i < dataCategories.length; i++) {
     let boutonFiltre = document.createElement("button");
     boutonFiltre.innerText = dataCategories[i].name;
-    boutonFiltre.classList.add("filtre");
+    boutonFiltre.dataset.id = dataCategories[i].id;
     divFiltre.appendChild(boutonFiltre);
+  }
+
+  //GENERER LA CLASS ACTIVE SUR LE BOUTON CLIQUE
+  //Récupération des boutons
+  let listeBoutons = document.querySelectorAll("button");
+  //Création class active pour bouton cliqué
+  for (let i = 0; i < listeBoutons; i++) {
+    let btnActuel = listeBoutons[i];
+
+    btnActuel.addEventListener("click", (event) => {
+      btnActuel.classList.add("active");
+    });
   }
 
   //GENERER LES WORKS SUR HTML
@@ -40,7 +51,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
   //Création de la section Works dans le fichier HTML
   for (let i = 0; i < dataWorks.length; i++) {
     let userGallery = document.createElement("figure");
-    userGallery.setAttribute = ("id", dataWorks[i].categoryId);
+    userGallery.dataset.id = dataWorks[i].categoryId;
 
     let imgGallery = document.createElement("img");
     imgGallery.src = dataWorks[i].imageUrl;
@@ -56,12 +67,12 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 });
 
 /*faire une boucle for sur dataWorks
-générer les works coté html avec sur chaque figure le dataAttribute de la categoryId
-écouter le click sur un filtre => ca doit supprimer la clase active sur tous les filtres et ajouter la classe active 
-  sur le filtre clické! il ne peut pas y avoir plus d'un filtre écouté a la fois
-j'ajoute la classe active sur le filtre clické
-je recupere la data de la categoryId du filtre clické 
-dans les works, je mets en display none tout les works qui n'ont pas les bon data attribute correspondant au filtre*/
+v  Générer les works coté html avec sur chaque figure le dataAttribute de la categoryId
+  Ecouter le click sur un filtre => ca doit supprimer la clase active sur tous les filtres et ajouter la classe active 
+    sur le filtre clické! il ne peut pas y avoir plus d'un filtre écouté a la fois
+  J'ajoute la classe active sur le filtre clické
+  Je recupere la data de la categoryId du filtre clické 
+  Dans les works, je mets en display none tout les works qui n'ont pas les bon data attribute correspondant au filtre*/
 
 /*marre de JS = CSS sur bouton class=filtre : CSS special quand le bouton a la class active
 dans index.html en mode login marge noire en haut et pas en logout : filtres masqué en login
