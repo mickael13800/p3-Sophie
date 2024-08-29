@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async (event) => {
     //Création de la section Works dans le fichier HTML
     for (let i = 0; i < dataWorks.length; i++) {
       let userGallery = document.createElement("figure");
-      userGallery.dataset.id = dataWorks[i].categoryId;
+      userGallery.setAttribute("data-id", dataWorks[i].categoryId);
 
       let imgGallery = document.createElement("img");
       imgGallery.src = dataWorks[i].imageUrl;
