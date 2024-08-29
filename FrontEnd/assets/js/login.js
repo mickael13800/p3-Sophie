@@ -25,15 +25,20 @@ const form = document.querySelector("form");
 //Bouton envoyer renvoie le champs "email" et "password"
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  let email = document.getElementById("email");
-  let password = document.getElementById("password");
-  //Obligation de remplir les champs "email" et "password"
-  if (email.value === "" || password.value === "") {
-    throw new Error(`Le champs ou password est vide`);
-  } else {
-    console.log(email.value, password.value);
-  }
-  /*
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  console.log(email.value, password.value);
+
+  fetch("http://localhost:5678/api/users/login", {
+    method: "POST",
+    body: {
+      email: email.value,
+      password: password.value,
+    },
+    headers: { "Content-Type": "application/json" },
+  });
+});
+
+/*
   if réponse de l'API post = 200 alors stocké le token et redirigé index html
   else {displayErrorMessage();// ici j'instancie la function créée avant}*/
-});
