@@ -1,0 +1,53 @@
+.mode-edit {
+  height: max-content;
+  width: max-content;
+}
+
+/*****HEADER*****/
+.mode-edit header {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+}
+
+.mode-edit .header {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px 0;
+}
+
+.mode-edit .edit-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 21px;
+  background-color: black;
+  color: white;
+  height: 59px;
+}
+
+.mode-edit .logout {
+  display: inline;
+}
+
+.mode-edit .login {
+  display: none;
+}
+
+/*****MAIN-PORTFOLIO*****/
+.mode-edit .filtres {
+  display: none;
+}
+
+.mode-edit .modification {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.mode-edit .projet {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  align-items: baseline;
+  margin: 100px;
+}
