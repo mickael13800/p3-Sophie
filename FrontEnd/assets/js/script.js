@@ -1,5 +1,12 @@
 document.addEventListener("DOMContentLoaded", async (event) => {
   console.log("script JS est chargé");
+  //Bouton se connecter ajoute la classe mode-edit en HTML
+  const editMode = window.localStorage.getItem("editMode");
+
+  if (editMode === "true") {
+    document.body.classList.add("mode-edit");
+    window.localStorage.removeItem("editMode");
+  }
 
   //fonction appel catégories depuis l'API
   async function getDataCategories() {
@@ -63,13 +70,19 @@ document.addEventListener("DOMContentLoaded", async (event) => {
       let listeBoutons = document.querySelectorAll(".btn-filtre");
       console.log(listeBoutons.length);
       //Création class active pour bouton cliqué
-      listeBoutons.forEach((btnActive) => {
-        btnActive.addEventListener("click", (event) => {
-          listeBoutons.forEach((btn) => btn.classList.remove("active"));
-          btnActive.classList.add("active");
-          // Récupérer le categoryId du bouton cliqué
-          const categoryId = btnActive.getAttribute("data-id");
-          console.log("Category Id: ", categoryId);
+      divFiltre.addEventListener("click", (event) => {
+        listeBoutons.forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        // Récupérer le categoryId du bouton cliqué
+        const categoryId = event.target.getAttribute("data-id");
+        console.log("Category Id: ", categoryId);
+        //Afficher les éléments filtrés
+        getDataWorks().then((dataWorks) => {
+          for (let i = dataWorks.length - 1; i >= 0; i--) {
+            if (dataWorks.categoryId !== listeBoutons.categoryId) {
+              dataWorks.splice(i, 1);
+            }
+          }
         });
       });
     });
@@ -77,16 +90,16 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
 /*faire une boucle for sur dataWorks
 v   Générer les works coté html avec sur chaque figure le dataAttribute de la categoryId
-    Ecouter le click sur un filtre => ca doit supprimer la classe active sur tous les filtres et ajouter la classe 
+v    Ecouter le click sur un filtre => ca doit supprimer la classe active sur tous les filtres et ajouter la classe 
       active 
-    Sur le filtre clické! il ne peut pas y avoir plus d'un filtre écouté a la fois
-    J'ajoute la classe active sur le filtre clické
-    Je recupere la data de la categoryId du filtre clické 
-    Dans les works, je mets en display none tout les works qui n'ont pas les bon data attribute correspondant au 
+v    Sur le filtre clické! il ne peut pas y avoir plus d'un filtre écouté a la fois
+v    J'ajoute la classe active sur le filtre clické
+v    Je recupere la data de la categoryId du filtre clické 
+v    Dans les works, je mets en display none tout les works qui n'ont pas les bon data attribute correspondant au 
       filtre*/
 
 /*
 v    Marre de JS = CSS sur bouton class=filtre : CSS special quand le bouton a la class active
       dans index.html 
-    En mode login marge noire en haut et pas en logout : filtres masqué en login
-    Wording login devient logout*/
+v    En mode login marge noire en haut et pas en logout : filtres masqué en login
+v    Wording login devient logout*/
