@@ -7,16 +7,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
   v  étape 4 qd je clique sur le bouton envoyer, je fais un console.log de ce qui a été saisie dans le champ e-mail
   v  étape 5 coté login.html rendre obligatoire le champ email et password
   v  étape 6 compléter l'étape 4  avec console.log de ce qui est saisi dans le champs password
-    étape 7 regarder un tuto d'un appel API fetch Post on aura besoin de passer les infos comme swagger montre qu'il 
+  v  étape 7 regarder un tuto d'un appel API fetch Post on aura besoin de passer les infos comme swagger montre qu'il 
       faut avoir une 200. Il y aura donc un else pour afficher le mess d'erreur si on a pas une reponse 200 de l'API
-    étape 8 si j'obtiens en réponse 200, j'ai un token a stocker en localStorage et je fais une redirection vers 
+  v  étape 8 si j'obtiens en réponse 200, j'ai un token a stocker en localStorage et je fais une redirection vers 
       index.html
     */
 });
 function displayErrorMessage() {
-  console.log(
-    "je peux maintenant codé ce qu'il faut pour afficher un message d'erreur dans ma page"
-  );
+  console.log("mot de passe ou e-mail incorrect");
 }
 
 //Récupération du formulaire de connexion
@@ -29,14 +27,29 @@ form.addEventListener("submit", (event) => {
   const password = document.getElementById("password");
   console.log(email.value, password.value);
 
+  const userId = { email: email.value, password: password.value };
+  const chargeUtile = JSON.stringify(userId);
+
   fetch("http://localhost:5678/api/users/login", {
     method: "POST",
-    body: {
-      email: email.value,
-      password: password.value,
-    },
+    body: chargeUtile,
     headers: { "Content-Type": "application/json" },
-  });
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        displayErrorMessage();
+        throw new Error("Erreur de connexion");
+      }
+    })
+    .then((data) => {
+      window.localStorage.setItem("editMode", "true");
+      window.location.href = "index.html";
+    })
+    .catch((error) => {
+      displayErrorMessage();
+    });
 });
 
 /*
