@@ -3,6 +3,10 @@
   width: max-content;
 }
 
+.mode-edit .hover {
+  cursor: pointer;
+}
+
 /*****HEADER*****/
 .mode-edit header {
   display: flex;
