@@ -184,12 +184,14 @@ nav li {
   font-size: 1.2em;
 }
 
-nav a {
+a {
   text-decoration: none;
+  color: black;
 }
 
 li:hover {
   color: #b1663c;
+  cursor: pointer;
 }
 #introduction {
   display: flex;
@@ -242,6 +244,7 @@ button:hover {
   background-color: white;
   font-size: 16px;
   font-weight: bold;
+  border: 2px solid #1d6154;
 }
 
 .filtres button:first-child,
@@ -313,10 +316,15 @@ input[type="submit"] {
   width: 180px;
   text-align: center;
   border-radius: 60px;
+  cursor: pointer;
 }
 
 footer nav ul {
   display: flex;
   justify-content: flex-end;
   margin: 2em;
+}
+
+a:hover {
+  color: #b1663c;
 }
