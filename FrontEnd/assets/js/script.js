@@ -1,11 +1,12 @@
 document.addEventListener("DOMContentLoaded", async (event) => {
   console.log("script JS est chargé");
   //Bouton se connecter ajoute la classe mode-edit en HTML
-  const editMode = window.localStorage.getItem("editMode");
+  const editMode = window.localStorage.getItem("token");
 
-  if (editMode === "true") {
+  if (editMode) {
     document.body.classList.add("mode-edit");
-    window.localStorage.removeItem("editMode");
+  } else {
+    document.body.classList.remove("mode-edit");
   }
 
   //fonction appel catégories depuis l'API
@@ -77,29 +78,24 @@ document.addEventListener("DOMContentLoaded", async (event) => {
         const categoryId = event.target.getAttribute("data-id");
         console.log("Category Id: ", categoryId);
         //Afficher les éléments filtrés
-        getDataWorks().then((dataWorks) => {
-          for (let i = dataWorks.length - 1; i >= 0; i--) {
-            if (dataWorks.categoryId !== listeBoutons.categoryId) {
-              dataWorks.splice(i, 1);
+        const imgWorks = document.querySelectorAll(".gallery figure");
+
+        if (categoryId === "All") {
+          for (let i = 0; i < imgWorks.length; i++) {
+            // Affiche toutes les images
+            imgWorks[i].style.display = "block";
+          }
+        } else {
+          for (let i = 0; i < imgWorks.length; i++) {
+            if (imgWorks[i].getAttribute("data-id") === categoryId) {
+              // Affiche les images avec le bon ID
+              imgWorks[i].style.display = "block";
+            } else {
+              // Masque les images qui ne correspondent pas
+              imgWorks[i].style.display = "none";
             }
           }
-        });
+        }
       });
     });
 });
-
-/*faire une boucle for sur dataWorks
-v   Générer les works coté html avec sur chaque figure le dataAttribute de la categoryId
-v    Ecouter le click sur un filtre => ca doit supprimer la classe active sur tous les filtres et ajouter la classe 
-      active 
-v    Sur le filtre clické! il ne peut pas y avoir plus d'un filtre écouté a la fois
-v    J'ajoute la classe active sur le filtre clické
-v    Je recupere la data de la categoryId du filtre clické 
-v    Dans les works, je mets en display none tout les works qui n'ont pas les bon data attribute correspondant au 
-      filtre*/
-
-/*
-v    Marre de JS = CSS sur bouton class=filtre : CSS special quand le bouton a la class active
-      dans index.html 
-v    En mode login marge noire en haut et pas en logout : filtres masqué en login
-v    Wording login devient logout*/
