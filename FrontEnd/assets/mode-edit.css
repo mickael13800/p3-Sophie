@@ -1,6 +1,5 @@
-.mode-edit {
-  height: max-content;
-  width: max-content;
+body.mode-edit {
+  max-width: fit-content;
 }
 
 .mode-edit .hover {
@@ -17,7 +16,7 @@
 .mode-edit .header {
   display: flex;
   justify-content: space-between;
-  margin: 50px 0;
+  margin: 38px 150px;
 }
 
 .mode-edit .edit-mode {
@@ -39,6 +38,10 @@
 }
 
 /*****MAIN-PORTFOLIO*****/
+.mode-edit main {
+  margin: 0 190px;
+}
+
 .mode-edit .filtres {
   display: none;
 }
