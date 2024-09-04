@@ -2,6 +2,7 @@
   display: none;
   position: fixed;
   top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
 }
@@ -17,6 +18,10 @@
   background-color: #333333d3;
 }
 
+.modal-trigger {
+  cursor: pointer;
+}
+
 .modal {
   width: 630px;
   min-width: 300px;
@@ -27,6 +32,13 @@
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal .step-one {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -50,10 +62,38 @@
 
 .photo {
   border-bottom: 2px solid #b3b3b3;
-  padding: 20px 50px;
+  padding: 20px 0px;
   width: 420px;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 5px;
+}
+
+.photo img {
+  width: 77px;
+  height: 103px;
+}
+
+.photo-container {
+  position: relative;
+  display: inline-block;
+}
+
+.photo-container img {
+  display: block;
+}
+
+.photo-container .trash-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  background-color: black;
+  color: #fff;
+  border-radius: 2px;
+  font-size: 10px;
+  padding: 5px;
 }
 
 .add-photo {
@@ -65,4 +105,5 @@
   color: #fff;
   font-size: 14px;
   font-weight: bold;
+  border: 1px solid #1d6154;
 }
