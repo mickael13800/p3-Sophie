@@ -132,8 +132,9 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           imgModal.alt = dataWorks[i].title;
           //création de l'icone corbeille
           let trashIcon = document.createElement("i");
-          trashIcon.classList.add("fa-solid", "fa-trash-can");
-          trashIcon.classList.add("trash-icon");
+          trashIcon.classList.add("fa-solid", "fa-trash-can", "trash-icon");
+          // Associer l'ID de la photo à l'icône corbeille
+          trashIcon.dataset.id = dataWorks[i].id;
 
           photoContainer.appendChild(imgModal);
           photoContainer.appendChild(trashIcon);
@@ -142,8 +143,56 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           stepOne.appendChild(btnAddPhoto);
 
           // Ajout d'un événement pour supprimer la photo au clic sur l'icône
-          trashIcon.addEventListener("click", function () {
-            photoContainer.remove();
+          trashIcon.addEventListener("click", (event) => {
+            const imgId = event.target.dataset.id;
+            deleteImg(imgId);
+          });
+          //fonction pour effacer la photo
+          function deleteImg(imgId) {
+            fetch(`http://localhost:5678/api/works/${imgId}`, {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+            })
+              .then((response) => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  throw new Error("Echec de la suppression");
+                }
+              })
+              .catch((error) => {
+                console.error("Erreur lors de la suppression :", error);
+              });
+          }
+          //Passage au step2
+          btnAddPhoto.addEventListener("click", () => {
+            stepOne.style.display = "none";
+            stepTwo.style.display = "flex";
+          });
+
+          //MODALE STEP2
+          //Récupération des éléments step2
+          const stepTwo = document.querySelector(".step-two");
+          const backStep = document.querySelector(".back-step");
+          const inputFile = document.querySelector(".upload-photo");
+          const addImgDiv = document.querySelector(".add-img");
+          const iconImage = document.querySelector(".fa-image");
+          const infoText = document.querySelector(".add-img p");
+          const addNewPhoto = document.querySelector(".add-new-photo");
+          const inputTitle = document.getElementById("title");
+          const btnNewPhoto = document.querySelector(".btn-new-photo");
+
+          //Ajout d'une photo
+          addNewPhoto.addEventListener("click", (event) => {
+            event.preventDefault();
+            // Déclencher l'ouverture de la fenêtre de sélection de fichier
+            inputFile.click();
+          });
+
+          //Retour step1
+          backStep.addEventListener("click", () => {
+            stepOne.style.display = "flex";
+            stepTwo.style.display = "none";
           });
         }
       });

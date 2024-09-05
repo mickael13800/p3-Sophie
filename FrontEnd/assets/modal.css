@@ -29,7 +29,7 @@
   background-color: #fff;
   border-radius: 10px;
   position: absolute;
-  top: 40%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -38,6 +38,11 @@
   align-items: center;
 }
 
+.modal h3 {
+  font-size: 26px;
+}
+
+/******STEP 1******/
 .modal .step-one {
   display: flex;
   flex-direction: column;
@@ -54,10 +59,6 @@
   top: 10px;
   right: 10px;
   cursor: pointer;
-}
-
-.modal h3 {
-  font-size: 26px;
 }
 
 .photo {
@@ -105,5 +106,106 @@
   color: #fff;
   font-size: 14px;
   font-weight: bold;
-  border: 1px solid #1d6154;
+  border: none;
+}
+
+/******STEP 2******/
+.modal .step-two {
+  flex-direction: column;
+}
+
+.back-step {
+  padding: 8px 10px;
+  border: none;
+  background: #fff;
+  font-size: 18px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+}
+
+.step-two-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 420px;
+  border-bottom: 1px solid #b3b3b3;
+  padding-bottom: 47px;
+}
+
+.add-img {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 13px 0 19px 0;
+  margin: 36px 0 30px 0;
+  width: 420px;
+  height: 169px;
+  background: #e8f1f6;
+  border-radius: 3px;
+}
+
+.add-img i {
+  font-size: 76px;
+  color: #b9c5cc;
+}
+
+.add-img button {
+  width: 173px;
+  height: 36px;
+  border-radius: 50px;
+  background: #c8d6dc;
+  color: #306685;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+}
+
+.add-img p {
+  color: #444;
+  text-align: center;
+  font-family: "Work Sans";
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.step-two-body form {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.step-two-body label {
+  margin: 20px 0 10px 0;
+}
+.step-two-body input,
+select {
+  height: 50px;
+  font-size: 1.2em;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.step-two-foot {
+  text-align: center;
+  padding-top: 30px;
+}
+
+.step-two-foot button {
+  width: 237px;
+  height: 36px;
+  border-radius: 60px;
+  background: #a7a7a7;
+  color: #fff;
+  text-align: center;
+  font-family: Syne;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
 }
