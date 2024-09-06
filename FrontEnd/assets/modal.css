@@ -40,6 +40,7 @@
 
 .modal h3 {
   font-size: 26px;
+  margin-top: 20px;
 }
 
 /******STEP 1******/
@@ -111,6 +112,7 @@
 
 /******STEP 2******/
 .modal .step-two {
+  display: none;
   flex-direction: column;
 }
 
@@ -139,7 +141,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  padding: 13px 0 19px 0;
   margin: 36px 0 30px 0;
   width: 420px;
   height: 169px;
@@ -147,9 +148,19 @@
   border-radius: 3px;
 }
 
+.add-img img {
+  max-width: 50%;
+  max-height: 100%;
+}
+
+.add-img input {
+  display: none;
+}
+
 .add-img i {
   font-size: 76px;
   color: #b9c5cc;
+  padding-top: 15px;
 }
 
 .add-img button {
@@ -172,6 +183,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  padding-bottom: 20px;
 }
 
 .step-two-body form {
@@ -197,7 +209,7 @@ select {
   padding-top: 30px;
 }
 
-.step-two-foot button {
+.btn-new-photo:disabled {
   width: 237px;
   height: 36px;
   border-radius: 60px;
@@ -208,4 +220,17 @@ select {
   font-size: 14px;
   font-weight: 700;
   border: none;
+}
+
+.btn-new-photo {
+  color: #fff;
+  background: #1d6154;
+  border: none;
+  width: 237px;
+  height: 36px;
+  border-radius: 60px;
+  text-align: center;
+  font-family: Syne;
+  font-size: 14px;
+  font-weight: 700;
 }

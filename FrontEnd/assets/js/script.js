@@ -164,37 +164,97 @@ document.addEventListener("DOMContentLoaded", async (event) => {
                 console.error("Erreur lors de la suppression :", error);
               });
           }
-          //Passage au step2
-          btnAddPhoto.addEventListener("click", () => {
-            stepOne.style.display = "none";
-            stepTwo.style.display = "flex";
-          });
+        }
+      });
+      //Passage au step2
+      btnAddPhoto.addEventListener("click", () => {
+        stepOne.style.display = "none";
+        stepTwo.style.display = "flex";
+      });
 
-          //MODALE STEP2
-          //Récupération des éléments step2
-          const stepTwo = document.querySelector(".step-two");
-          const backStep = document.querySelector(".back-step");
-          const inputFile = document.querySelector(".upload-photo");
-          const addImgDiv = document.querySelector(".add-img");
-          const iconImage = document.querySelector(".fa-image");
-          const infoText = document.querySelector(".add-img p");
-          const addNewPhoto = document.querySelector(".add-new-photo");
-          const inputTitle = document.getElementById("title");
-          const btnNewPhoto = document.querySelector(".btn-new-photo");
+      //MODALE STEP2
+      //Récupération des éléments step2
+      const stepTwo = document.querySelector(".step-two");
+      const backStep = document.querySelector(".back-step");
+      const inputFile = document.querySelector(".upload-photo");
+      const addImgDiv = document.querySelector(".add-img");
+      const iconImage = document.querySelector(".fa-image");
+      const infoText = document.querySelector(".add-img p");
+      const addNewPhoto = document.querySelector(".add-new-photo");
+      const selectCategorie = document.getElementById("categorie");
 
-          //Ajout d'une photo
-          addNewPhoto.addEventListener("click", (event) => {
-            event.preventDefault();
-            // Déclencher l'ouverture de la fenêtre de sélection de fichier
-            inputFile.click();
-          });
+      //Ajout d'une photo
+      addNewPhoto.addEventListener("click", (event) => {
+        event.preventDefault();
+        // Déclencher l'ouverture de la fenêtre de sélection de fichier
+        inputFile.click();
+      });
+      inputFile.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          // Créer un objet URL pour afficher l'aperçu de l'image
+          const imageUrl = URL.createObjectURL(file);
+          // Masquer les éléments existants
+          iconImage.style.display = "none";
+          addNewPhoto.style.display = "none";
+          infoText.style.display = "none";
+          // Créer un élément <img> pour l'aperçu de la photo
+          let imgPreview = document.createElement("img");
+          imgPreview.src = imageUrl;
+          // Ajouter l'image dans la div .add-img
+          addImgDiv.appendChild(imgPreview);
+          //rendre la liste déroulante active
+          selectCategorie.disabled = false;
 
-          //Retour step1
-          backStep.addEventListener("click", () => {
-            stepOne.style.display = "flex";
-            stepTwo.style.display = "none";
+          //GENERER LES CATEGORIES DANS LA LISTE DEROULANTE
+          // Ajouter une option par défaut vide
+          let optionVide = document.createElement("option");
+          optionVide.innerText = "";
+          optionVide.setAttribute("value", "");
+          optionVide.setAttribute("selected", true);
+          selectCategorie.appendChild(optionVide);
+          //Générer les catégories dans la liste déroulante
+          getDataCategories().then((dataCategories) => {
+            for (let i = 0; i < dataCategories.length; i++) {
+              let optionCategorie = document.createElement("option");
+              optionCategorie.innerText = dataCategories[i].name;
+              optionCategorie.setAttribute("value", dataCategories[i].id);
+              selectCategorie.appendChild(optionCategorie);
+            }
           });
         }
+        //Activation du bouton valider
+        const inputTitle = document.getElementById("title");
+        const btnNewPhoto = document.querySelector(".btn-new-photo");
+        //fonction de vérification pour les champs obligatoire
+        function checkFormValidity() {
+          if (inputTitle.value !== "" && selectCategorie.value !== "") {
+            btnNewPhoto.disabled = false;
+          } else {
+            btnNewPhoto.disabled = true;
+          }
+        }
+        inputTitle.addEventListener("input", checkFormValidity);
+        selectCategorie.addEventListener("change", checkFormValidity);
+
+        //Envoyer nouvelle photo sur API
+        btnNewPhoto.addEventListener("click", () => {
+          const newWorkElement = {
+            title: inputTitle.value,
+            category: selectCategorie.value,
+          };
+          const newWork = JSON.stringify(newWorkElement);
+          fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: newWork,
+          });
+        });
+      });
+      //Retour step1
+      backStep.addEventListener("click", () => {
+        stepOne.style.display = "flex";
+        stepTwo.style.display = "none";
       });
     });
 });

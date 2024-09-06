@@ -86,7 +86,7 @@
               <div class="photo"></div>
               <button class="add-photo">Ajouter une photo</button>
             </div>
-            <div class="step-two" style="display: none">
+            <div class="step-two">
               <button class="back-step">
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
@@ -94,12 +94,7 @@
                 <h3>Ajout photo</h3>
                 <div class="add-img">
                   <i class="fa-solid fa-image"></i>
-                  <input
-                    type="file"
-                    class="upload-photo"
-                    accept="image/png, image/jpeg"
-                    style="display: none"
-                  />
+                  <input type="file" class="upload-photo" accept="image/*" />
                   <button class="add-new-photo">+ Ajouter photo</button>
                   <p>jpg, png : 4mo max</p>
                 </div>
@@ -107,12 +102,7 @@
                   <label for="title">Titre</label>
                   <input type="text" name="title" id="title" />
                   <label for="categorie">Catégorie</label>
-                  <select id="categorie" name="categorie" disabled>
-                    <option value="option0" selected></option>
-                    <option value="option1">Objets</option>
-                    <option value="option2">Appartements</option>
-                    <option value="option3">Hotels & restaurants</option>
-                  </select>
+                  <select id="categorie" name="categorie" disabled></select>
                 </form>
               </div>
               <div class="step-two-foot">
