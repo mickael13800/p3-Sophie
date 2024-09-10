@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 });
 
 function displayErrorMessage() {
-  alert("mot de passe ou e-mail incorrect");
+  alert("Erreur dans l'identifiant ou le mot de passe");
   console.log("mot de passe ou e-mail incorrect");
 }
 

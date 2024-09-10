@@ -43,6 +43,15 @@
   margin-top: 20px;
 }
 
+.add-photo,
+.btn-new-photo {
+  border-radius: 60px;
+  color: white;
+  font-weight: bold;
+  background-color: #1d6154;
+  border: none;
+}
+
 /******STEP 1******/
 .modal .step-one {
   display: flex;
@@ -102,12 +111,7 @@
   width: 237px;
   height: 36px;
   margin-top: 40px;
-  border-radius: 60px;
-  background-color: #1d6154;
-  color: #fff;
   font-size: 14px;
-  font-weight: bold;
-  border: none;
 }
 
 /******STEP 2******/
@@ -223,14 +227,9 @@ select {
 }
 
 .btn-new-photo {
-  color: #fff;
-  background: #1d6154;
-  border: none;
   width: 237px;
   height: 36px;
-  border-radius: 60px;
   text-align: center;
   font-family: Syne;
   font-size: 14px;
-  font-weight: 700;
 }

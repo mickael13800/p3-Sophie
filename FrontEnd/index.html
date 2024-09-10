@@ -94,7 +94,11 @@
                 <h3>Ajout photo</h3>
                 <div class="add-img">
                   <i class="fa-solid fa-image"></i>
-                  <input type="file" class="upload-photo" accept="image/*" />
+                  <input
+                    type="file"
+                    class="upload-photo"
+                    accept="image/jpg, image/jpeg, image/png"
+                  />
                   <button class="add-new-photo">+ Ajouter photo</button>
                   <p>jpg, png : 4mo max</p>
                 </div>
@@ -102,7 +106,7 @@
                   <label for="title">Titre</label>
                   <input type="text" name="title" id="title" />
                   <label for="categorie">Catégorie</label>
-                  <select id="categorie" name="categorie" disabled></select>
+                  <select id="categorie" name="categorie"></select>
                 </form>
               </div>
               <div class="step-two-foot">

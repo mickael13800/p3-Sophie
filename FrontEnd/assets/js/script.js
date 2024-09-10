@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", async (event) => {
   console.log("script JS est chargé");
   //Bouton se connecter ajoute la classe mode-edit en HTML
   const editMode = window.localStorage.getItem("token");
+  //Récupération du token
+  const token = window.localStorage.getItem("token");
 
   if (editMode) {
     document.body.classList.add("mode-edit");
@@ -149,13 +151,14 @@ document.addEventListener("DOMContentLoaded", async (event) => {
           });
           //fonction pour effacer la photo
           function deleteImg(imgId) {
+            //Requête de suppression
             fetch(`http://localhost:5678/api/works/${imgId}`, {
               method: "DELETE",
-              headers: { "Content-Type": "application/json" },
+              headers: { Authorization: `Bearer ${token}` },
             })
               .then((response) => {
                 if (response.ok) {
-                  return response.json();
+                  document.querySelector(`[data-id="${imgId}"]`).remove();
                 } else {
                   throw new Error("Echec de la suppression");
                 }
@@ -191,37 +194,47 @@ document.addEventListener("DOMContentLoaded", async (event) => {
       });
       inputFile.addEventListener("change", (event) => {
         const file = event.target.files[0];
-        if (file) {
-          // Créer un objet URL pour afficher l'aperçu de l'image
-          const imageUrl = URL.createObjectURL(file);
-          // Masquer les éléments existants
-          iconImage.style.display = "none";
-          addNewPhoto.style.display = "none";
-          infoText.style.display = "none";
-          // Créer un élément <img> pour l'aperçu de la photo
-          let imgPreview = document.createElement("img");
-          imgPreview.src = imageUrl;
-          // Ajouter l'image dans la div .add-img
-          addImgDiv.appendChild(imgPreview);
-          //rendre la liste déroulante active
-          selectCategorie.disabled = false;
+        // Taille maximale de 4 Mo
+        const tailleMax = 4 * 1024 * 1024;
 
-          //GENERER LES CATEGORIES DANS LA LISTE DEROULANTE
-          // Ajouter une option par défaut vide
-          let optionVide = document.createElement("option");
-          optionVide.innerText = "";
-          optionVide.setAttribute("value", "");
-          optionVide.setAttribute("selected", true);
-          selectCategorie.appendChild(optionVide);
-          //Générer les catégories dans la liste déroulante
-          getDataCategories().then((dataCategories) => {
-            for (let i = 0; i < dataCategories.length; i++) {
-              let optionCategorie = document.createElement("option");
-              optionCategorie.innerText = dataCategories[i].name;
-              optionCategorie.setAttribute("value", dataCategories[i].id);
-              selectCategorie.appendChild(optionCategorie);
-            }
-          });
+        if (file.size > tailleMax) {
+          // Si la taille dépasse 4 Mo
+          alert("L'image est trop grande ! Maximum 4 Mo");
+          // Réinitialise le champ de fichier
+          inputFile.value = "";
+        } else {
+          if (file) {
+            // Créer un objet URL pour afficher l'aperçu de l'image
+            const imageUrl = URL.createObjectURL(file);
+            // Masquer les éléments existants
+            iconImage.style.display = "none";
+            addNewPhoto.style.display = "none";
+            infoText.style.display = "none";
+            // Créer un élément <img> pour l'aperçu de la photo
+            let imgPreview = document.createElement("img");
+            imgPreview.src = imageUrl;
+            // Ajouter l'image dans la div .add-img
+            addImgDiv.appendChild(imgPreview);
+            //rendre la liste déroulante active
+            selectCategorie.disabled = false;
+
+            //GENERER LES CATEGORIES DANS LA LISTE DEROULANTE
+            // Ajouter une option par défaut vide
+            let optionVide = document.createElement("option");
+            optionVide.innerText = "";
+            optionVide.setAttribute("value", "");
+            optionVide.setAttribute("selected", true);
+            selectCategorie.appendChild(optionVide);
+            //Générer les catégories dans la liste déroulante
+            getDataCategories().then((dataCategories) => {
+              for (let i = 0; i < dataCategories.length; i++) {
+                let optionCategorie = document.createElement("option");
+                optionCategorie.innerText = dataCategories[i].name;
+                optionCategorie.setAttribute("value", dataCategories[i].id);
+                selectCategorie.appendChild(optionCategorie);
+              }
+            });
+          }
         }
         //Activation du bouton valider
         const inputTitle = document.getElementById("title");
@@ -239,22 +252,29 @@ document.addEventListener("DOMContentLoaded", async (event) => {
 
         //Envoyer nouvelle photo sur API
         btnNewPhoto.addEventListener("click", () => {
-          const newWorkElement = {
-            title: inputTitle.value,
-            category: selectCategorie.value,
-          };
-          const newWork = JSON.stringify(newWorkElement);
+          const formData = new FormData();
+
+          formData.append("title", inputTitle.value);
+          formData.append("category", selectCategorie.value);
+          formData.append("image", inputFile.files[0]);
           fetch("http://localhost:5678/api/works", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: newWork,
-          });
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Success:", data);
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
         });
       });
       //Retour step1
       backStep.addEventListener("click", () => {
-        stepOne.style.display = "flex";
         stepTwo.style.display = "none";
+        stepOne.style.display = "flex";
       });
     });
 });
