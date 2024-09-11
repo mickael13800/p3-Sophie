@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     document.body.classList.remove("mode-edit");
   }
 
-  //Récupération des éléments step1 et step2
+  //Récupération des éléments modal step1 et step2
   const stepOne = document.querySelector(".step-one");
   const stepTwo = document.querySelector(".step-two");
 
@@ -47,6 +47,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       console.error("erreur lors du chargement des works");
     }
   }
+
+  //fonction affichage des works
   function displayWorks() {
     //Récupération de la div .gallery
     let divGallery = document.querySelector(".gallery");
@@ -75,7 +77,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   }
   displayWorks();
 
-  //fonction pour effacer la photo
+  //fonction pour effacer une photo
   async function deleteImg(imgId) {
     try {
       // Requête de suppression
@@ -95,6 +97,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   }
 
+  //fonction de mise à jour de la gallery modal
   function updateModalGallery() {
     const galleryPhoto = document.querySelector(".photo");
     // Vider la galerie avant de la remplir
@@ -126,17 +129,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
   }
 
+  //fonction de réinitialisation de la modal
   function resetModal() {
     // Réinitialiser le champ de fichier et l'aperçu de l'image
     const inputFile = document.querySelector(".upload-photo");
-    const addImgDiv = document.querySelector(".add-img");
+    const imgDiv = document.querySelector(".add-img img");
     const iconImage = document.querySelector(".fa-image");
     const addNewPhoto = document.querySelector(".add-new-photo");
     const infoText = document.querySelector(".add-img p");
 
     inputFile.value = "";
-    addImgDiv.innerHTML = "";
 
+    imgDiv.style.display = "none";
     iconImage.style.display = "block";
     addNewPhoto.style.display = "block";
     infoText.style.display = "block";
@@ -148,6 +152,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
     inputTitle.value = "";
     selectCategorie.value = "";
     selectCategorie.disabled = true;
+    // Vider toutes les options de la liste déroulante
+    selectCategorie.innerHTML = "";
 
     // Réinitialiser les boutons
     const btnNewPhoto = document.querySelector(".btn-new-photo");
@@ -158,12 +164,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
     stepOne.style.display = "flex";
   }
 
+  //CREATION DES BOUTONS DE FILTRE
   //Récupération de la div .filtre
   let divFiltre = document.querySelector(".filtres");
   //Création du bouton filtres "Tous" + intégration dans le fichier HTML
   let boutonTous = document.createElement("button");
   boutonTous.innerText = "Tous";
-  boutonTous.setAttribute("data-id", "All");
+  boutonTous.setAttribute("data-category-id", "All");
   boutonTous.classList.add("btn-filtre", "active");
   divFiltre.appendChild(boutonTous);
 
@@ -173,7 +180,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       for (let i = 0; i < dataCategories.length; i++) {
         let boutonFiltre = document.createElement("button");
         boutonFiltre.innerText = dataCategories[i].name;
-        boutonFiltre.setAttribute("data-id", dataCategories[i].id);
+        boutonFiltre.setAttribute("data-category-id", dataCategories[i].id);
         boutonFiltre.classList.add("btn-filtre");
         divFiltre.appendChild(boutonFiltre);
       }
@@ -206,23 +213,27 @@ document.addEventListener("DOMContentLoaded", (event) => {
           }
         }
       });
-
-      //MODALE
-      const modalContainer = document.querySelector(".modal-container");
-      const modalTriggers = document.querySelectorAll(".modal-trigger");
-
-      modalTriggers.forEach((trigger) =>
-        trigger.addEventListener("click", (event) => {
-          event.preventDefault();
-          toggleModal();
-          updateModalGallery();
-        })
-      );
-
-      function toggleModal() {
-        modalContainer.classList.toggle("active");
-      }
     });
+
+  //MODALE
+  const modalContainer = document.querySelector(".modal-container");
+  const modalTriggers = document.querySelectorAll(".modal-trigger");
+
+  modalTriggers.forEach((trigger) =>
+    trigger.addEventListener("click", (event) => {
+      event.preventDefault();
+      toggleModal();
+      updateModalGallery();
+    })
+  );
+
+  //Fonction afficher/masquer la modal
+  function toggleModal() {
+    modalContainer.classList.toggle("active");
+    stepTwo.style.display = "none";
+    stepOne.style.display = "flex";
+  }
+
   //Passage au step2
   const btnAddPhoto = document.querySelector(".add-photo");
   btnAddPhoto.addEventListener("click", () => {
@@ -346,6 +357,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
     });
   });
+
   //Retour step1
   backStep.addEventListener("click", () => {
     stepTwo.style.display = "none";
