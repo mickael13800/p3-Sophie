@@ -157,10 +157,6 @@ function resetModal() {
   // Réinitialiser les boutons
   const btnNewPhoto = document.querySelector(".btn-new-photo");
   btnNewPhoto.disabled = true;
-
-  // Retourner à la première étape de la modale
-  stepTwo.style.display = "none";
-  stepOne.style.display = "flex";
 }
 
 //CREATION DES BOUTONS DE FILTRE
@@ -267,7 +263,9 @@ inputFile.addEventListener("change", (event) => {
     // Si la taille dépasse 4 Mo
     alert("L'image est trop grande ! Maximum 4 Mo");
     // Réinitialise le champ de fichier
-    inputFile.value = "";
+    resetModal();
+    //on arrête l'exécution
+    return;
     //vérifier le type de fichier
   } else if (!formatsAutorises.includes(file.type)) {
     //alert mauvais type de fichier
@@ -275,7 +273,9 @@ inputFile.addEventListener("change", (event) => {
       "Le format du fichier n'est pas accepté ! .jpg, .jpeg ou .png uniquement"
     );
     // Réinitialise le champ de fichier
-    inputFile.value = "";
+    resetModal();
+    //on arrête l'exécution
+    return;
   } else {
     if (file) {
       // Créer un objet URL pour afficher l'aperçu de l'image
@@ -284,6 +284,11 @@ inputFile.addEventListener("change", (event) => {
       iconImage.style.display = "none";
       addNewPhoto.style.display = "none";
       infoText.style.display = "none";
+      // Supprimer l'ancienne prévisualisation si elle existe
+      const oldPreview = addImgDiv.querySelector("img");
+      if (oldPreview) {
+        oldPreview.remove();
+      }
       // Créer un élément <img> pour l'aperçu de la photo
       let imgPreview = document.createElement("img");
       imgPreview.src = imageUrl;
@@ -313,6 +318,7 @@ inputFile.addEventListener("change", (event) => {
   //Activation du bouton valider
   const inputTitle = document.getElementById("title");
   const btnNewPhoto = document.querySelector(".btn-new-photo");
+
   //fonction de vérification pour les champs obligatoire
   function checkFormValidity() {
     if (inputTitle.value !== "" && selectCategorie.value !== "") {
@@ -325,36 +331,40 @@ inputFile.addEventListener("change", (event) => {
   selectCategorie.addEventListener("change", checkFormValidity);
 
   //Envoyer nouvelle photo sur API
-  btnNewPhoto.addEventListener("click", async () => {
-    try {
-      const formData = new FormData();
-      formData.append("title", inputTitle.value);
-      formData.append("category", selectCategorie.value);
-      formData.append("image", inputFile.files[0]);
+  btnNewPhoto.addEventListener(
+    "click",
+    async () => {
+      try {
+        const formData = new FormData();
+        formData.append("title", inputTitle.value);
+        formData.append("category", selectCategorie.value);
+        formData.append("image", inputFile.files[0]);
 
-      const response = await fetch("http://localhost:5678/api/works", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error("Erreur lors de l'ajout de la nouvelle photo");
+        const response = await fetch("http://localhost:5678/api/works", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+        if (!response.ok) {
+          throw new Error("Erreur lors de l'ajout de la nouvelle photo");
+        }
+        const data = await response.json();
+        console.log("Success:", data);
+        //alert ajout réussi
+        alert("Photo ajoutée avec succès !");
+
+        //Fermeture de la modale
+        toggleModal();
+        resetModal();
+        // Mise à jour de la galerie principale
+        displayWorks();
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Une erreur est survenue lors de l'ajout de la photo.");
       }
-      const data = await response.json();
-      console.log("Success:", data);
-      //alert ajout réussi
-      alert("Photo ajoutée avec succès !");
-      // Réinitialiser la modale après l'ajout
-      resetModal();
-
-      // Mise à jour de la galerie principale
-      displayWorks();
-      updateModalGallery();
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Une erreur est survenue lors de l'ajout de la photo.");
-    }
-  });
+    },
+    { once: true }
+  );
 });
 
 //Retour step1
