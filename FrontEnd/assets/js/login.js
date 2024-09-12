@@ -33,7 +33,6 @@ form.addEventListener("submit", async (event) => {
     window.localStorage.setItem("token", data.token);
     window.location.href = "index.html";
   } catch (error) {
-    displayErrorMessage();
     console.error("Une erreur s'est produite :", error);
   }
 });
