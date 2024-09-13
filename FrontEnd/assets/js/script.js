@@ -252,6 +252,43 @@ addNewPhoto.addEventListener("click", (event) => {
   // Déclencher l'ouverture de la fenêtre de sélection de fichier
   inputFile.click();
 });
+
+//Fonction de soumission d'une nouvelle photo
+async function submitNewPhoto() {
+  const inputTitle = document.getElementById("title");
+  const selectCategorie = document.getElementById("categorie");
+  const inputFile = document.querySelector(".upload-photo");
+  const btnNewPhoto = document.querySelector(".btn-new-photo");
+  try {
+    const formData = new FormData();
+    formData.append("title", inputTitle.value);
+    formData.append("category", selectCategorie.value);
+    formData.append("image", inputFile.files[0]);
+
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+    if (!response.ok) {
+      throw new Error("Erreur lors de l'ajout de la nouvelle photo");
+    }
+    const data = await response.json();
+    console.log("Success:", data);
+    //alert ajout réussi
+    alert("Photo ajoutée avec succès !");
+    //Fermeture de la modale
+    //toggleModal();
+    resetModal();
+    // Mise à jour des galeries principale et modale
+    displayWorks();
+    updateModalGallery();
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Une erreur est survenue lors de l'ajout de la photo.");
+  }
+}
+
 inputFile.addEventListener("change", (event) => {
   const file = event.target.files[0];
   // Taille maximale de 4 Mo
@@ -330,41 +367,8 @@ inputFile.addEventListener("change", (event) => {
   inputTitle.addEventListener("input", checkFormValidity);
   selectCategorie.addEventListener("change", checkFormValidity);
 
-  //Envoyer nouvelle photo sur API
-  btnNewPhoto.addEventListener(
-    "click",
-    async () => {
-      try {
-        const formData = new FormData();
-        formData.append("title", inputTitle.value);
-        formData.append("category", selectCategorie.value);
-        formData.append("image", inputFile.files[0]);
-
-        const response = await fetch("http://localhost:5678/api/works", {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'ajout de la nouvelle photo");
-        }
-        const data = await response.json();
-        console.log("Success:", data);
-        //alert ajout réussi
-        alert("Photo ajoutée avec succès !");
-
-        //Fermeture de la modale
-        toggleModal();
-        resetModal();
-        // Mise à jour de la galerie principale
-        displayWorks();
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Une erreur est survenue lors de l'ajout de la photo.");
-      }
-    },
-    { once: true }
-  );
+  // Soumission du formulaire pour ajouter une nouvelle photo
+  btnNewPhoto.addEventListener("click", submitNewPhoto);
 });
 
 //Retour step1
